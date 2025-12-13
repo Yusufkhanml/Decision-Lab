@@ -1,32 +1,36 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 from fastapi.responses import StreamingResponse
-from ..database import engine
-import io
 import csv
+import io
+
+from ..database import SessionLocal
+from ..models import Response
 
 router = APIRouter(prefix="/export", tags=["Export"])
 
-@router.get("/responses")
-def export_responses_csv():
-    conn = engine.raw_connection()
-    cursor = conn.cursor()
 
-    cursor.execute("""
-        SELECT response_id, user_id, scenario_id, option_id,
-               choice_type, choice_text, created_at
-        FROM responses
-        ORDER BY created_at
-    """)
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
+
+@router.get("/responses")
+def export_responses(db: Session = Depends(get_db)):
+    responses = db.query(Response).all()
 
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow([desc[0] for desc in cursor.description])
-    writer.writerows(cursor.fetchall())
+    writer.writerow(["id", "user_id", "scenario_id", "option_id", "created_at"])
 
-    cursor.close()
-    conn.close()
+    for r in responses:
+        writer.writerow([r.id, r.user_id, r.scenario_id, r.option_id, r.created_at])
 
     output.seek(0)
+
     return StreamingResponse(
         output,
         media_type="text/csv",

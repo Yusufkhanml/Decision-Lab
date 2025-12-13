@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from ..database import SessionLocal
 from ..models import Scenario, ScenarioOption
 
-router = APIRouter(prefix="/scenarios", tags=["Scenarios"])
+router = APIRouter(prefix="/api/scenarios", tags=["Scenarios"])
+
 
 def get_db():
     db = SessionLocal()
@@ -11,6 +12,7 @@ def get_db():
         yield db
     finally:
         db.close()
+
 
 @router.get("/{scenario_id}")
 def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
@@ -30,24 +32,18 @@ def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
         .all()
     )
 
-    # SAFELY extract fields that actually exist
-    scenario_data = {
-        "scenario_id": scenario.scenario_id,
-        "title": getattr(scenario, "title", None),
-        "text": (
-            getattr(scenario, "scenario_text", None)
-            or getattr(scenario, "question", None)
-            or getattr(scenario, "content", None)
-        ),
+    return {
+        "scenario": {
+            "scenario_id": scenario.scenario_id,
+            "title": scenario.title,
+            "body": scenario.body,
+        },
         "options": [
             {
-                "option_id": opt.option_id,
-                "text": opt.text,
-                "choice_type": opt.choice_type,
-                "display_order": opt.display_order
+                "option_id": o.option_id,
+                "option_text": o.option_text,
+                "choice_type": o.choice_type,
             }
-            for opt in options
-        ]
+            for o in options
+        ],
     }
-
-    return scenario_data
