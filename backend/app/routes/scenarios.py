@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from ..database import SessionLocal
 from ..models import Scenario, ScenarioOption
 
@@ -14,10 +15,14 @@ def get_db():
         db.close()
 
 
-# ✅ GET SINGLE SCENARIO WITH OPTIONS
 @router.get("/{scenario_id}")
 def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
-    scenario = db.query(Scenario).filter(Scenario.id == scenario_id).first()
+    # ✅ CORRECT PRIMARY KEY USAGE
+    scenario = (
+        db.query(Scenario)
+        .filter(Scenario.scenario_id == scenario_id)
+        .first()
+    )
 
     if not scenario:
         raise HTTPException(status_code=404, detail="Scenario not found")
@@ -30,12 +35,12 @@ def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
     )
 
     return {
-        "id": scenario.id,
+        "scenario_id": scenario.scenario_id,
         "title": scenario.title,
         "description": scenario.description,
         "options": [
             {
-                "id": opt.id,
+                "option_id": opt.option_id,
                 "text": opt.text,
                 "choice_type": opt.choice_type,
                 "display_order": opt.display_order
