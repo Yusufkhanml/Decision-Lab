@@ -1,11 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-
 from ..database import SessionLocal
 from ..models import Scenario, ScenarioOption
 
 router = APIRouter(prefix="/scenarios", tags=["Scenarios"])
-
 
 def get_db():
     db = SessionLocal()
@@ -14,10 +12,8 @@ def get_db():
     finally:
         db.close()
 
-
 @router.get("/{scenario_id}")
 def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
-    # ✅ CORRECT PRIMARY KEY USAGE
     scenario = (
         db.query(Scenario)
         .filter(Scenario.scenario_id == scenario_id)
@@ -34,10 +30,15 @@ def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
         .all()
     )
 
-    return {
+    # SAFELY extract fields that actually exist
+    scenario_data = {
         "scenario_id": scenario.scenario_id,
-        "title": scenario.title,
-        "description": scenario.description,
+        "title": getattr(scenario, "title", None),
+        "text": (
+            getattr(scenario, "scenario_text", None)
+            or getattr(scenario, "question", None)
+            or getattr(scenario, "content", None)
+        ),
         "options": [
             {
                 "option_id": opt.option_id,
@@ -48,3 +49,5 @@ def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
             for opt in options
         ]
     }
+
+    return scenario_data
