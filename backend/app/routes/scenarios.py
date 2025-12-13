@@ -3,7 +3,8 @@ from sqlalchemy.orm import Session
 from ..database import SessionLocal
 from ..models import Scenario, ScenarioOption
 
-router = APIRouter(prefix="/scenario", tags=["Scenarios"])
+router = APIRouter(prefix="/scenarios", tags=["Scenarios"])
+
 
 def get_db():
     db = SessionLocal()
@@ -12,9 +13,12 @@ def get_db():
     finally:
         db.close()
 
+
+# ✅ GET SINGLE SCENARIO WITH OPTIONS
 @router.get("/{scenario_id}")
 def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
-    scenario = db.query(Scenario).filter(Scenario.scenario_id == scenario_id).first()
+    scenario = db.query(Scenario).filter(Scenario.id == scenario_id).first()
+
     if not scenario:
         raise HTTPException(status_code=404, detail="Scenario not found")
 
@@ -26,6 +30,16 @@ def fetch_scenario(scenario_id: int, db: Session = Depends(get_db)):
     )
 
     return {
-        "scenario": scenario,
-        "options": options
+        "id": scenario.id,
+        "title": scenario.title,
+        "description": scenario.description,
+        "options": [
+            {
+                "id": opt.id,
+                "text": opt.text,
+                "choice_type": opt.choice_type,
+                "display_order": opt.display_order
+            }
+            for opt in options
+        ]
     }
