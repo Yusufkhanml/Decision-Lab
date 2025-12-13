@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from .routes import scenarios, responses, export
+
+from backend.app.routes import scenarios, responses, export
 
 app = FastAPI()
 
@@ -12,6 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(scenarios.router, prefix="/api")
-app.include_router(responses.router, prefix="/api")
-app.include_router(export.router, prefix="/api")
+# ✅ NO prefix here
+app.include_router(scenarios.router)
+app.include_router(responses.router)
+app.include_router(export.router)
