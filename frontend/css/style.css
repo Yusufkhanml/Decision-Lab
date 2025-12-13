@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: Poppins, Arial, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+.container {
+  max-width: 720px;
+  margin: 80px auto;
+  padding: 30px;
+  border-radius: 20px;
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+.center {
+  text-align: center;
+}
+
+h1, h2 {
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+
+.start-btn {
+  display: inline-block;
+  padding: 16px 40px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+  text-decoration: none;
+  font-size: 20px;
+  transition: 0.3s;
+}
+
+.start-btn:hover {
+  background: rgba(255,255,255,0.35);
+  transform: scale(1.05);
+}
+
+button {
+  width: 100%;
+  padding: 16px;
+  margin: 10px 0;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  font-size: 17px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.3);
+  transform: scale(1.03);
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.progress {
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.progress::after {
+  content: "";
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: #6dd5fa;
+}
