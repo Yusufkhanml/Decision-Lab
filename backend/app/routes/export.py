@@ -1,14 +1,12 @@
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-from fastapi.responses import StreamingResponse
-import csv
-import io
-
 from ..database import SessionLocal
 from ..models import Response
+import csv
+from fastapi.responses import StreamingResponse
+import io
 
-router = APIRouter(prefix="/export", tags=["Export"])
-
+router = APIRouter(prefix="/api/export", tags=["Export"])
 
 def get_db():
     db = SessionLocal()
@@ -17,17 +15,33 @@ def get_db():
     finally:
         db.close()
 
-
 @router.get("/responses")
 def export_responses(db: Session = Depends(get_db)):
     responses = db.query(Response).all()
 
     output = io.StringIO()
     writer = csv.writer(output)
-    writer.writerow(["id", "user_id", "scenario_id", "option_id", "created_at"])
+
+    writer.writerow([
+        "response_id",
+        "user_id",
+        "scenario_id",
+        "option_id",
+        "choice_type",
+        "choice_text",
+        "created_at"
+    ])
 
     for r in responses:
-        writer.writerow([r.id, r.user_id, r.scenario_id, r.option_id, r.created_at])
+        writer.writerow([
+            r.response_id,
+            r.user_id,
+            r.scenario_id,
+            r.option_id,
+            r.choice_type,
+            r.choice_text,
+            r.created_at
+        ])
 
     output.seek(0)
 
