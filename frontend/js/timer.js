@@ -1,21 +1,19 @@
-function startTimer(seconds) {
-  let t = seconds;
-  const label = document.getElementById("timer");
+let time = 7;
+let interval;
 
-  const i = setInterval(() => {
-    label.innerText = `Think... ${t}s`;
-    t--;
+export function startTimer() {
+  clearInterval(interval);
+  time = 7;
 
-    if (t < 0) {
-      clearInterval(i);
-      label.innerText = "Choose now";
-      unlock();
+  const timerEl = document.getElementById("timer");
+  timerEl.innerText = `⏳ ${time}s`;
+
+  interval = setInterval(() => {
+    time--;
+    timerEl.innerText = `⏳ ${time}s`;
+
+    if (time <= 0) {
+      clearInterval(interval);
     }
   }, 1000);
-}
-
-function unlock() {
-  unlocked = true;
-  document.querySelectorAll(".option")
-    .forEach(b => b.disabled = false);
 }

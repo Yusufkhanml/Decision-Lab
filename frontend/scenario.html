@@ -7,22 +7,20 @@
 </head>
 <body>
 
-<div id="container">
-  <h2 id="title"></h2>
+<div class="container">
+  <div class="left">
+    <img id="visual" src="" />
+  </div>
 
-  <img id="visual" />
-
-  <p id="story"></p>
-
-  <div id="options"></div>
-
-  <p id="timer">Please wait...</p>
+  <div class="right">
+    <button id="voiceToggle" class="voice-btn">🔊 Voice ON</button>
+    <div id="timer"></div>
+    <h2 id="title"></h2>
+    <p id="story"></p>
+    <div id="options"></div>
+  </div>
 </div>
 
-<script src="js/api.js"></script>
-<script src="js/effects.js"></script>
-<script src="js/timer.js"></script>
-<script src="js/ui.js"></script>
-
+<script type="module" src="js/ui.js"></script>
 </body>
 </html>
