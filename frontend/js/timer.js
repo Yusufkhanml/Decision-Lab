@@ -1,12 +1,21 @@
-let time = 10;
-const timerEl = document.getElementById("timer");
+function startTimer(seconds) {
+  let t = seconds;
+  const label = document.getElementById("timer");
 
-const interval = setInterval(() => {
-  timerEl.innerText = `Time left: ${time}s`;
-  time--;
+  const i = setInterval(() => {
+    label.innerText = `Think... ${t}s`;
+    t--;
 
-  if (time < 0) {
-    clearInterval(interval);
-    timerEl.innerText = "Time up. Decide now.";
-  }
-}, 1000);
+    if (t < 0) {
+      clearInterval(i);
+      label.innerText = "Choose now";
+      unlock();
+    }
+  }, 1000);
+}
+
+function unlock() {
+  unlocked = true;
+  document.querySelectorAll(".option")
+    .forEach(b => b.disabled = false);
+}

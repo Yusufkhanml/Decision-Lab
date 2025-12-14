@@ -1,9 +1,14 @@
-const scenarios = [
-  "Choose MSc or start a job?",
-  "Gym or home workout?",
-  "Startup or corporate job?",
-  "Save money or invest?"
-];
+const API_BASE = "https://decision-lab-backend-v2.onrender.com/api";
 
-document.getElementById("scenarioText").innerText =
-  scenarios[Math.floor(Math.random() * scenarios.length)];
+async function getScenario(id) {
+  const res = await fetch(`${API_BASE}/scenarios/${id}`);
+  return res.json();
+}
+
+async function submitResponse(payload) {
+  await fetch(`${API_BASE}/response`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+}
