@@ -1,40 +1,40 @@
-window.onload = async () => {
-  const params = new URLSearchParams(window.location.search);
-  const scenarioId = parseInt(params.get("scenario"));
+// index.html logic
+const startBtn = document.getElementById("startBtn");
+if (startBtn) {
+  startBtn.onclick = () => {
+    window.location.href = "scenario.html?scenario_id=1";
+  };
+}
 
-  const data = await getScenario(scenarioId);
+// scenario.html logic
+const params = new URLSearchParams(window.location.search);
+const scenarioId = params.get("scenario_id");
 
-  document.getElementById("title").innerText = data.scenario.title;
+if (scenarioId) {
+  loadScenario(parseInt(scenarioId));
+}
 
-  const storyEl = document.getElementById("story");
-  typeWriter(storyEl, data.scenario.story_text);
+async function loadScenario(id) {
+  try {
+    const data = await getScenario(id);
 
-  const progress = document.getElementById("progress");
-  progress.style.setProperty("--progress", `${(scenarioId / 6) * 100}%`);
+    document.getElementById("title").innerText = data.scenario.title;
+    document.getElementById("story").innerText = data.scenario.story_text;
 
-  const optionsEl = document.getElementById("options");
-  optionsEl.innerHTML = data.options
-    .map(o => `<button onclick="choose(${scenarioId},${o.option_id})">${o.option_text}</button>`)
-    .join("");
+    const optionsDiv = document.getElementById("options");
+    optionsDiv.innerHTML = "";
 
-  lockButtons(7);
-};
+    data.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.innerText = opt.option_text;
+      btn.onclick = async () => {
+        await submitResponse("guest", id, opt);
+        window.location.href = scenario.html?scenario_id=${id + 1};
+      };
+      optionsDiv.appendChild(btn);
+    });
 
-async function choose(scenarioId, optionId) {
-  document.body.classList.add("slide-out");
-
-  await sendResponse({
-    user_id: "user_anon",
-    scenario_id: scenarioId,
-    option_id: optionId
-  });
-
-  const next = scenarioId + 1;
-  if (next <= 6) {
-    setTimeout(() => {
-      location.href = `scenario.html?scenario=${next}`;
-    }, 600);
-  } else {
-    alert("Done. Thank you.");
+  } catch (err) {
+    alert(err.message);
   }
 }

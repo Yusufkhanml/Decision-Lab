@@ -1,27 +1,8 @@
-.fade-in {
-  animation: fadeIn 1s ease forwards;
+.fade {
+  animation: fade 2s infinite alternate;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
+@keyframes fade {
+  from { opacity: 0.4; }
   to { opacity: 1; }
-}
-
-.pulse {
-  animation: pulse 1.3s infinite;
-}
-
-@keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.08); }
-  100% { transform: scale(1); }
-}
-
-.slide-out {
-  animation: slideOut 0.6s forwards;
-}
-
-@keyframes slideOut {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
 }
