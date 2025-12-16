@@ -5,7 +5,7 @@ INSERT INTO scenarios (domain, title, story_text)
 VALUES (
     'finance',
     'Spend vs Save',
-    'He wants to buy something. Spending gives joy now. Saving gives security later. Both feel right.'
+    'Spending gives joy now. Saving gives security later. Both feel right.'
 );
 
 INSERT INTO scenario_options (scenario_id, option_text, choice_type, display_order) VALUES
@@ -99,3 +99,4 @@ INSERT INTO scenario_options (scenario_id, option_text, choice_type, display_ord
 (6, 'I will buy quality, but cheap is also not wrong', 'balanced_B', 3),
 (6, 'Definitely, I will buy cheap', 'definite_A', 4),
 (6, 'Definitely, I will buy quality', 'definite_B', 5);
+
