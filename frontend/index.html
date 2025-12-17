@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
   <title>Decision Lab</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body class="intro">
+  <div class="intro-container">
+    <h1 class="intro-title">Decision Lab</h1>
 
-<div class="center">
-  <h1>Decision Lab</h1>
-  <p>Life decisions. No right answer.</p>
-  <button class="start-btn" onclick="location.href='scenario.html'">
-    Start
-  </button>
-</div>
+    <p class="intro-line">Every day, you make choices.</p>
+    <p class="intro-line">Some feel small. Some change everything.</p>
+    <p class="intro-line">This isn’t a test — there are no right answers.</p>
+    <p class="intro-line">Just choose honestly.</p>
 
+    <button id="startBtn" class="start-btn">Begin</button>
+  </div>
+
+  <script>
+    document.getElementById("startBtn").onclick = () => {
+      window.location.href = "scenario.html";
+    };
+  </script>
 </body>
 </html>

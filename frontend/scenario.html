@@ -1,26 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Scenario</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/animations.css">
+  <meta charset="UTF-8" />
+  <title>Decision Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animation.css" />
 </head>
 <body>
 
-<div class="container">
-  <div class="left">
-    <img id="visual" src="" />
+  <!-- Loader -->
+  <div id="loader" class="loader">
+    <span>Loading scenario...</span>
   </div>
 
-  <div class="right">
-    <button id="voiceToggle" class="voice-btn">🔊 Voice ON</button>
-    <div id="timer"></div>
-    <h2 id="title"></h2>
-    <p id="story"></p>
-    <div id="options"></div>
-  </div>
-</div>
+  <!-- Main App -->
+  <div id="app" class="app" style="display:none;">
+    
+    <div class="scenario-container">
 
-<script type="module" src="js/ui.js"></script>
+      <!-- Text side -->
+      <div class="scenario-text">
+        <h1 id="title"></h1>
+
+        <div id="story"></div>
+
+        <div id="options" class="options"></div>
+      </div>
+
+      <!-- Image side -->
+      <div class="scenario-image">
+        <img id="scenarioImage" src="" alt="Scenario visual" />
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="module" src="js/api.js"></script>
+  <script type="module" src="js/ui.js"></script>
+
 </body>
 </html>

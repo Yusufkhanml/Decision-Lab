@@ -7,9 +7,14 @@ export async function getScenario(id) {
 }
 
 export async function submitResponse(payload) {
-  await fetch(`${API_BASE}/response`, {
+  const res = await fetch(`${API_BASE}/response/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(payload)
   });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.detail || "Response failed");
+  }
 }
